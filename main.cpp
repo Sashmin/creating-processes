@@ -1,37 +1,47 @@
 #include <iostream>
 #include <fstream>
-#include <Windows.h>
-using namespace std;
+#include <windows.h>
+#include <conio.h>
+#include <string>
+#include "Employee.h"
 
-struct Employee
+void outputBinaryFile(std::string fileName, int numOfEntries)
 {
-    int num;
-    char name[10];
-    double hours;
-};
-
-istream& operator>>(istream& fin, Employee& emp)
-{
-    return fin >> emp.num >> emp.name >> emp.hours;
-}
-
-void Creator(const char *fileName, int numOfEmployees)
-{
-    ofstream fout(fileName, ios::binary);
+    std::ifstream fin(fileName, std::ios::binary);
     Employee temp;
-    for (int i = 0; i < numOfEmployees; i++)
+    for (int i = 0; i < numOfEntries; i++)
     {
-        cin >> temp;
-        fout.write((char*)&temp, sizeof(Employee));
+        fin.read((char*)&temp, sizeof(Employee));
+        std::cout << temp << '\n';
     }
-    
 }
 
 int main()
 {
-    Creator("input.bin", 2);
-    ifstream fin("input.bin", ios::binary);
-    Employee temp;
-    fin.read((char*)&temp, sizeof(Employee));
-    cout << temp.num << temp.name << temp.hours;
-}
+    std::string binFileName;
+    int numOfEntries;
+
+    std::cout << "Enter name of the file: ";
+    std::cin >> binFileName;
+    std::cout << "Enter number of entries: ";
+    std::cin >> numOfEntries;
+
+    std::string commandLineRequest = "Creator.exe";
+    commandLineRequest += " " + binFileName + " " + std::to_string(numOfEntries);
+    std::wstring wCommandLineRequest = std::wstring(commandLineRequest.begin(), commandLineRequest.end());
+    LPSTR lpwCommandLineRequest = &commandLineRequest[0];
+
+    STARTUPINFOA si;
+    PROCESS_INFORMATION piApp;
+
+    ZeroMemory(&si, sizeof(STARTUPINFO));
+    si.cb = sizeof(STARTUPINFO);
+
+    CreateProcessA(NULL, lpwCommandLineRequest, NULL, NULL, FALSE,
+    CREATE_NEW_CONSOLE, NULL, NULL, &si, &piApp);
+
+    WaitForSingleObject(piApp.hProcess, INFINITE);
+
+    outputBinaryFile(binFileName, numOfEntries);
+    
+}   
