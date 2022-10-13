@@ -27,8 +27,8 @@ int main()
     std::cin >> numOfEntries;
 
     std::string commandLineRequest = "Creator.exe";
-    commandLineRequest += " " + binFileName + " " + std::to_string(numOfEntries);
-    std::wstring wCommandLineRequest = std::wstring(commandLineRequest.begin(), commandLineRequest.end());
+    // commandLineRequest += " " + binFileName + " " + std::to_string(numOfEntries);
+    // std::wstring wCommandLineRequest = std::wstring(commandLineRequest.begin(), commandLineRequest.end());
     LPSTR lpwCommandLineRequest = &commandLineRequest[0];
 
     STARTUPINFOA si;
@@ -41,6 +41,10 @@ int main()
     CREATE_NEW_CONSOLE, NULL, NULL, &si, &piApp);
 
     WaitForSingleObject(piApp.hProcess, INFINITE);
+
+    CloseHandle(piApp.hProcess);
+
+    
 
     outputBinaryFile(binFileName, numOfEntries);
     
