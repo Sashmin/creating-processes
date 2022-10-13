@@ -8,10 +8,24 @@
 void outputBinaryFile(std::string fileName, int numOfEntries)
 {
     std::ifstream fin(fileName, std::ios::binary);
+    std::cout << fileName << ":\n"; 
+
     Employee temp;
     for (int i = 0; i < numOfEntries; i++)
     {
         fin.read((char*)&temp, sizeof(Employee));
+        std::cout << temp << '\n';
+    }
+}
+
+void outputReport(std::string fileName, int numOfEntries)
+{
+    std::ifstream fin(fileName); 
+
+    std::string temp;
+    for (int i = 0; i < numOfEntries + 2; i++)
+    {
+        std::getline(fin, temp);
         std::cout << temp << '\n';
     }
 }
@@ -46,7 +60,9 @@ int main()
 
     CloseHandle(piApp.hProcess);
 
+    std::cout << '\n';
     outputBinaryFile(binFileName, numOfEntries);
+    std::cout << '\n';
 
     std::string txtFileName;
     int hourlySalary;
@@ -67,6 +83,10 @@ int main()
     CREATE_NEW_CONSOLE, NULL, NULL, &si, &piApp);
 
     WaitForSingleObject(piApp.hProcess, INFINITE);
+
+    std::cout << '\n';
+    outputReport(txtFileName, numOfEntries);
+    std::cout << '\n';
 
     CloseHandle(piApp.hProcess);
 

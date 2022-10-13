@@ -1,5 +1,4 @@
 Report from input.bin
 ID                NAME               HOURS        TOTAL SALARY
-3                  Al                   4                 800
-5                  Jj                  55               11000
-34                 jjj                  78               15600
+5                  ee                   4                 800
+2                  rr                   6                1200
