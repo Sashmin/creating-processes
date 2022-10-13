@@ -11,4 +11,6 @@ int main(int argc, char* argv[])
         std::cin >> temp;
         fout.write((char*)&temp, sizeof(Employee));
     }
+
+    fout.close();
 }

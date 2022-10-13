@@ -1,6 +1,7 @@
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
 #include <fstream>
+#include <iomanip>
 
 struct Employee
 {
@@ -16,7 +17,7 @@ std::istream& operator>>(std::istream& fin, Employee& emp)
 
 std::ostream& operator<<(std::ostream& fout, const Employee& emp)
 {
-    return fout << emp.num << " " << emp.name << " " << emp.hours;
+    return fout << emp.num << std::setw(20) << emp.name << std::setw(20) << emp.hours;
 }
 
 #endif

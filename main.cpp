@@ -25,11 +25,13 @@ int main()
     std::cin >> binFileName;
     std::cout << "Enter number of entries: ";
     std::cin >> numOfEntries;
+    std::string commandLineRequest;
+    LPSTR lpwCommandLineRequest;
 
-    std::string commandLineRequest = "Creator.exe";
-    // commandLineRequest += " " + binFileName + " " + std::to_string(numOfEntries);
+    commandLineRequest = "Creator.exe";
+    commandLineRequest += " " + binFileName + " " + std::to_string(numOfEntries);
     // std::wstring wCommandLineRequest = std::wstring(commandLineRequest.begin(), commandLineRequest.end());
-    LPSTR lpwCommandLineRequest = &commandLineRequest[0];
+    lpwCommandLineRequest = &commandLineRequest[0];
 
     STARTUPINFOA si;
     PROCESS_INFORMATION piApp;
@@ -44,8 +46,30 @@ int main()
 
     CloseHandle(piApp.hProcess);
 
-    
-
     outputBinaryFile(binFileName, numOfEntries);
+
+    std::string txtFileName;
+    int hourlySalary;
+
+    std::cout << "Enter text report file: ";
+    std::cin >> txtFileName;
+    std::cout << "Enter hourly salary: ";
+    std::cin >> hourlySalary;
+
+    commandLineRequest = "Reporter.exe";
+    commandLineRequest += " " + binFileName + " " + txtFileName + " " + std::to_string(hourlySalary);
+    lpwCommandLineRequest = &commandLineRequest[0];
+
+    ZeroMemory(&si, sizeof(STARTUPINFO));
+    si.cb = sizeof(STARTUPINFO);
+
+    CreateProcessA(NULL, lpwCommandLineRequest, NULL, NULL, FALSE,
+    CREATE_NEW_CONSOLE, NULL, NULL, &si, &piApp);
+
+    WaitForSingleObject(piApp.hProcess, INFINITE);
+
+    CloseHandle(piApp.hProcess);
+
+    
     
 }   
